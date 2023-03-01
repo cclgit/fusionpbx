@@ -561,17 +561,8 @@ if (!class_exists('email')) {
 						}
 					}
 
-					//save output to a buffer
-					ob_start();
-
 					//send the email
-					$mail_status = $mail->Send();
-
-					//get the output buffer
-					$this->response = ob_get_clean();
-
-					//send the email
-					if (!$mail_status) {
+					if (!$mail->Send()) {
 						if (isset($mail->ErrorInfo) && strlen($mail->ErrorInfo) > 0) {
 							$this->error = $mail->ErrorInfo;
 						}

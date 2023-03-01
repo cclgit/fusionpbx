@@ -111,7 +111,7 @@
 			//$device_uuid = $_POST["device_uuid"];
 			//$device_line = $_POST["device_line"];
 			$voicemail_password = $_POST["voicemail_password"];
-			$voicemail_enabled = $_POST["voicemail_enabled"] ?: 'false';
+			$voicemail_enabled = $_POST["voicemail_enabled"];
 			$voicemail_mail_to = $_POST["voicemail_mail_to"];
 			$voicemail_transcription_enabled = $_POST["voicemail_transcription_enabled"];
 			$voicemail_file = $_POST["voicemail_file"];
@@ -136,7 +136,7 @@
 			$absolute_codec_string = $_POST["absolute_codec_string"];
 			$force_ping = $_POST["force_ping"];
 			$dial_string = $_POST["dial_string"];
-			$enabled = $_POST["enabled"] ?: 'false';
+			$enabled = $_POST["enabled"];
 			$description = $_POST["description"];
 
 			//outbound caller id number - only allow numeric and +
@@ -1005,7 +1005,6 @@
 	if (strlen($user_record) == 0) { $user_record = $_SESSION['extension']['user_record_default']['text']; }
 	if (strlen($voicemail_transcription_enabled) == 0) { $voicemail_transcription_enabled = $_SESSION['voicemail']['transcription_enabled_default']['boolean']; }
 	if (strlen($voicemail_enabled) == 0) { $voicemail_enabled = $_SESSION['voicemail']['enabled_default']['boolean']; }
-	if (strlen($enabled) == 0) { $enabled = 'true'; }
 
 //create token
 	$object = new token;
@@ -1620,6 +1619,7 @@
 		}
 		echo "    </select>\n";
 		echo "<br />\n";
+		echo "<br />\n";
 		echo $text['description-directory_visible']."\n";
 		echo "</td>\n";
 		echo "</tr>\n";
@@ -1643,6 +1643,7 @@
 			echo "    <option value='false'>".$text['label-false']."</option>\n";
 		}
 		echo "    </select>\n";
+		echo "<br />\n";
 		echo "<br />\n";
 		echo $text['description-directory_exten_visible']."\n";
 		echo "</td>\n";
@@ -1745,7 +1746,7 @@
 			echo "</td>\n";
 			echo "<td class='vtable' align='left'>\n";
 			echo "    <select class='formfld' name='voicemail_file' id='voicemail_file' onchange=\"if (this.selectedIndex != 2) { document.getElementById('voicemail_local_after_email').selectedIndex = 0; }\">\n";
-			echo "    	<option value=''>".$text['option-voicemail_file_listen']."</option>\n";
+			echo "    	<option value='' ".(($voicemail_file == "listen") ? "selected='selected'" : null).">".$text['option-voicemail_file_listen']."</option>\n";
 			echo "    	<option value='link' ".(($voicemail_file == "link") ? "selected='selected'" : null).">".$text['option-voicemail_file_link']."</option>\n";
 			echo "    	<option value='attach' ".(($voicemail_file == "attach") ? "selected='selected'" : null).">".$text['option-voicemail_file_attach']."</option>\n";
 			echo "    </select>\n";
@@ -2170,18 +2171,20 @@
 		echo "    ".$text['label-enabled']."\n";
 		echo "</td>\n";
 		echo "<td class='vtable' align='left'>\n";
-		if (substr($_SESSION['theme']['input_toggle_style']['text'], 0, 6) == 'switch') {
-			echo "	<label class='switch'>\n";
-			echo "		<input type='checkbox' id='enabled' name='enabled' value='true' ".($enabled == 'true' ? "checked='checked'" : null).">\n";
-			echo "		<span class='slider'></span>\n";
-			echo "	</label>\n";
+		echo "    <select class='formfld' name='enabled'>\n";
+		if ($enabled == "true") {
+			echo "    <option value='true' selected='selected'>".$text['label-true']."</option>\n";
 		}
 		else {
-			echo "	<select class='formfld' id='enabled' name='enabled'>\n";
-			echo "		<option value='true' ".($enabled == 'true' ? "selected='selected'" : null).">".$text['option-true']."</option>\n";
-			echo "		<option value='false' ".($enabled == 'false' ? "selected='selected'" : null).">".$text['option-false']."</option>\n";
-			echo "	</select>\n";
+			echo "    <option value='true'>".$text['label-true']."</option>\n";
 		}
+		if ($enabled == "false") {
+			echo "    <option value='false' selected='selected'>".$text['label-false']."</option>\n";
+		}
+		else {
+			echo "    <option value='false'>".$text['label-false']."</option>\n";
+		}
+		echo "    </select>\n";
 		echo "<br />\n";
 		echo $text['description-enabled']."\n";
 		echo "</td>\n";

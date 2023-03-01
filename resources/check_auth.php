@@ -17,7 +17,7 @@
 
 	The Initial Developer of the Original Code is
 	Mark J Crane <markjcrane@fusionpbx.com>
-	Portions created by the Initial Developer are Copyright (C) 2008-2023
+	Portions created by the Initial Developer are Copyright (C) 2008-2021
 	the Initial Developer. All Rights Reserved.
 
 	Contributor(s):
@@ -308,8 +308,8 @@
 					}
 					header("Location: ".$redirect_path);
 				}
-				elseif (isset($_SESSION['login']['destination']['text'])) {
-					header("Location: ".$_SESSION['login']['destination']['text']);
+				elseif (isset($_SESSION['login']['destination']['url'])) {
+					header("Location: ".$_SESSION['login']['destination']['url']);
 				} elseif (file_exists($_SERVER["PROJECT_ROOT"]."/core/dashboard/app_config.php")) {
 					header("Location: ".PROJECT_PATH."/core/dashboard/");
 				}

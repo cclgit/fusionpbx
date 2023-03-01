@@ -56,8 +56,7 @@
 				session:ready() and
 				caller_id_number ~= nil and (
 					vm_say_caller_id_number == nil or
-					vm_say_caller_id_number == "true" or
-					vm_say_caller_id_number == "before"
+					vm_say_caller_id_number == "true"
 				)) then
 				session:streamFile(sounds_dir.."/"..default_language.."/"..default_dialect.."/"..default_voice.."/voicemail/vm-from.wav");
 				session:say(caller_id_number, default_language, "name_spelled", "iterated");
@@ -68,8 +67,7 @@
 				session:ready() and
 				string.len(dtmf_digits) == 0 and (
 					vm_say_date_time == nil or
-					vm_say_date_time == "true" or
-					vm_say_date_time == "before"
+					vm_say_date_time == "true"
 				)) then
 				if (current_time_zone ~= nil) then
 					session:execute("set", "timezone="..current_time_zone.."");
@@ -119,7 +117,7 @@
 						if (mime_type == 'audio/mpeg') then
 							vm_message_ext = 'mp3';
 						end
-
+					
 					--rename the file
 						os.execute('mv '..message_location..' '..message_location..'.'..vm_message_ext);
 				end);
@@ -199,10 +197,8 @@
 				session:ready() and
 				caller_id_number ~= nil and
 				vm_say_caller_id_number ~= nil and
-				(
-					vm_say_caller_id_number == "last" or
-					vm_say_caller_id_number == "after"
-				)) then
+				vm_say_caller_id_number == "last"
+				) then
 				session:streamFile(sounds_dir.."/"..default_language.."/"..default_dialect.."/"..default_voice.."/voicemail/vm-from.wav");
 				session:say(caller_id_number, default_language, "name_spelled", "iterated");
 			end
@@ -212,10 +208,8 @@
 				session:ready() and
 				string.len(dtmf_digits) == 0 and
 				vm_say_date_time ~= nil and
-				(
-					vm_say_date_time == "last" or
-					vm_say_date_time == "after"
-				)) then
+				vm_say_date_time == "last"
+				) then
 				if (current_time_zone ~= nil) then
 					session:execute("set", "timezone="..current_time_zone.."");
 				end

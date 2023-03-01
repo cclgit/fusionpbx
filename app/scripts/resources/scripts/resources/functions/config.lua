@@ -58,11 +58,11 @@
 				--database switch settings
 				if (k == "database.1.type")             then database.switch.type = v; end
 				if (k == "database.1.path")             then database.switch.path = v; end
-				if (k == "database.1.name")             then database.switch.name = v; end
 				if (k == "database.1.host")             then database.switch.host = v; end
 				if (k == "database.1.hostaddr")         then database.switch.hostaddr = v; end
 				if (k == "database.1.port")             then database.switch.port = v; end
 				if (k == "database.1.sslmode")          then database.switch.sslmode = v; end
+				if (k == "database.1.name")             then database.switch.name = v; end
 				if (k == "database.1.username")         then database.switch.username = v; end
 				if (k == "database.1.password")         then database.switch.password = v; end
 				if (k == "database.1.backend.base64")   then database.backend.base64 = v; end
@@ -71,7 +71,6 @@
 				if (k == "switch.conf.dir")             then conf_dir = v; end
 				if (k == "switch.sounds.dir")           then sounds_dir = v; end
 				if (k == "switch.database.dir")         then database_dir = v; end
-				if (k == "switch.database.name")        then database_name = v; end
 				if (k == "switch.recordings.dir")       then recordings_dir = v; end
 				if (k == "switch.storage.dir")          then storage_dir = v; end
 				if (k == "switch.voicemail.dir")        then voicemail_dir = v; end
@@ -102,17 +101,17 @@
 		end
 		io.close(file);
 
-		--set the database values
+		--additional database setting
 		database.type = database.switch.type;
-		if (database.type == 'sqlite') then
+		database.name = database.switch.name;
+		if (database.switch.path) then
 			database.path = database.switch.path;
-			database.name = database.switch.name;
+			database_dir = database.switch.path;
 		end
 
 		--database system dsn
 		system_dsn = {}
 		if (database.system.type == 'pgsql') then
-			--create the system_dsn array
 			table.insert(system_dsn, [[pgsql://]]);
 			if (database.system.host) then
 				table.insert(system_dsn, [[host=]] .. database.system.host .. [[ ]]);
@@ -128,7 +127,6 @@
 			table.insert(system_dsn, [[user=]] .. database.system.username .. [[ ]]);
 			table.insert(system_dsn, [[password=]] .. database.system.password .. [[ ]]);
 		elseif (database.system.type == 'sqlite') then
-			--create the system_dsn array
 			table.insert(system_dsn, [[sqlite://]] .. database.system.path .. [[/]].. database.system.name ..[[ ]]);
 		end
 		database.system = table.concat(system_dsn, '');
@@ -136,7 +134,6 @@
 		--database switch dsn
 		switch_dsn = {}
 		if (database.switch.type == 'pgsql') then
-			--create the switch_dsn array
 			table.insert(switch_dsn, [[pgsql://]]);
 			if (database.switch.host) then
 				table.insert(switch_dsn, [[host=]] .. database.switch.host .. [[ ]]);
@@ -154,7 +151,6 @@
 			table.insert(switch_dsn, [[password=]] .. database.switch.password .. [[ ]]);
 			database.switch = table.concat(switch_dsn, '');
 		elseif (database.switch.type == 'sqlite') then
-			--create the switch_dsn array
 			table.insert(switch_dsn, [[sqlite://]] .. database.switch.path .. [[/]].. database.switch.name ..[[ ]]);
 		end
 		database.switch = table.concat(switch_dsn, '');

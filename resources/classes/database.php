@@ -3002,11 +3002,11 @@
 		 * {@link database::connect()}</p>
 		 * <p><b>Usage:</b><br>
 		 * <code>&nbsp; $database_object = database::new();</code></p>
-		 * @return database new instance of database object already connected
+		 * @return database reference to a new instance of database object
 		 * @see database::__construct()
 		 * @see database::connect()
 		 */
-		public static function new() {
+		public static function &new() {
 			$db = new database();
 			$db->connect();
 			return $db;

@@ -57,7 +57,7 @@
 //get http post variables and set them to php variables
 	if (count($_POST)>0) {
 		$name = $_POST["name"];
-		$enabled = $_POST["enabled"] ?: 'false';
+		$enabled = $_POST["enabled"];
 		$description = $_POST["description"];
 	}
 
@@ -140,9 +140,6 @@
 		unset($sql, $parameters, $row);
 	}
 
-//set the defaults
-	if (strlen($enabled) == 0) { $enabled = true; }
-
 //create token
 	$object = new token;
 	$token = $object->create($_SERVER['PHP_SELF']);
@@ -181,18 +178,10 @@
 	echo "	".$text['label-enabled']."\n";
 	echo "</td>\n";
 	echo "<td class='vtable' align='left'>\n";
-	if (substr($_SESSION['theme']['input_toggle_style']['text'], 0, 6) == 'switch') {
-		echo "	<label class='switch'>\n";
-		echo "		<input type='checkbox' id='enabled' name='enabled' value='true' ".($enabled == 'true' ? "checked='checked'" : null).">\n";
-		echo "		<span class='slider'></span>\n";
-		echo "	</label>\n";
-	}
-	else {
-		echo "	<select class='formfld' id='enabled' name='enabled'>\n";
-		echo "		<option value='true' ".($enabled == 'true' ? "selected='selected'" : null).">".$text['option-true']."</option>\n";
-		echo "		<option value='false' ".($enabled == 'false' ? "selected='selected'" : null).">".$text['option-false']."</option>\n";
-		echo "	</select>\n";
-	}
+	echo "	<select class='formfld' name='enabled'>\n";
+	echo "		<option value='true'>".$text['label-true']."</option>\n";
+	echo "		<option value='false' ".($enabled == 'false' ? "selected='selected'" : null).">".$text['label-false']."</option>\n";
+	echo "	</select>\n";
 	echo "<br />\n";
 	echo $text['description-enabled']."\n";
 	echo "</td>\n";
